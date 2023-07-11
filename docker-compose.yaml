@@ -1,0 +1,14 @@
+version: '3.5'
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      - POSTGRES_DB=fudydb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      # - POSTGRES_DB=${DB_DATABASE}
+      # - POSTGRES_USER=${DB_USER}
+      # - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5432:5432"
