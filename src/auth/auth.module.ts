@@ -6,12 +6,18 @@ import { UserEntity } from 'src/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import { ConfigModule } from '@nestjs/config'
+import { config } from "../config";
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [config],
+    }),
     TypeOrmModule.forFeature([UserEntity]),
     JwtModule.register({
-      secret: "token_secret",
+      secret: config().secret,
       signOptions: {
         expiresIn: 3600
       }
