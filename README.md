@@ -1,3 +1,21 @@
+Create a service with endpoints:
+- POST /user - creates a new user in database. Payload fields: email and password
+- POST /auth/login - checks user credentials. If the credentials are correct, return a JWT token. Payload fields: email and password
+- GET /auth/me - returns the current user
+
+Stack:
+- backend - NestJS
+- database - PostgreSQL
+
+Acceptance criteria:
+- swagger with correct models for all endpoints 
+- validation
+- configuration in .env file and environment variables
+- error handling
+
+Nice to have:
+- unit and e2e tests
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>

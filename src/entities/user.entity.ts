@@ -14,7 +14,6 @@ export class UserEntity extends AbstractEntity {
   email: string;
 
   @Column()
-  @Exclude()
   password: string;
 
   @BeforeInsert()
