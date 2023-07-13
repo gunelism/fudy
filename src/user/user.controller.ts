@@ -8,7 +8,7 @@ import { UserEntity } from 'src/entities/user.entity';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Get()
+  @Get('/me')
   @UseGuards(AuthGuard())
   findCurrentUser(@User() { email }: UserEntity) {
     return this.userService.findByEmail(email);
