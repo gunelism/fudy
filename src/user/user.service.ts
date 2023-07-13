@@ -1,20 +1,15 @@
-// import { Injectable } from '@nestjs/common';
-// import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from 'src/entities/user.entity';
+import { Repository } from 'typeorm';
 
-// @Injectable()
-// export class UserService {
-//   constructor(private configService: ConfigService){
-//   }
+@Injectable()
+export class UserService {
+  constructor(
+    @InjectRepository(UserEntity) private userRepo: Repository<UserEntity>,
+  ) {}
 
-//   findAll() {
-//     return `This action returns all user`;
-//   }
-
-//   findOne(id: number) {
-//     return `This action returns a #${id} user`;
-//   }
-
-//   remove(id: number) {
-//     return `This action removes a #${id} user`;
-//   }
-// }
+  async findByEmail(email: string): Promise<UserEntity> {
+    return this.userRepo.findOne({ where: { email } });
+  }
+}
