@@ -1,20 +1,67 @@
-// TODO
+import { Test, TestingModule } from '@nestjs/testing';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { UserEntity } from '../entities/user.entity';
+import { AuthGuard, PassportModule } from '@nestjs/passport';
 
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { AuthController } from './auth.controller';
 
-// describe('AuthController', () => {
-//   let controller: AuthController;
+describe('AuthController', () => {
+  let authController: AuthController;
+  let authService: AuthService;
+  const passportModule = PassportModule.register({ defaultStrategy: 'jwt' });
 
-//   beforeEach(async () => {
-//     const module: TestingModule = await Test.createTestingModule({
-//       controllers: [AuthController],
-//     }).compile();
+  beforeAll(async () => {
+    const ApiServiceProvider = {
+      provide: AuthService,
+      useFactory: () => ({
+        register: jest.fn().mockResolvedValue({ 
+          name: "gunel",
+          email: "gunel3@mail.com",
+          password: "$2a$10$E3ziOh//mRzxZXSBbbfWJO9/8my.RgZpen9DcDmDxFHB9JblgJtrK",
+          id: 7,
+          created: "2023-07-14T09:39:15.347Z",
+          updated: "2023-07-14T09:39:15.347Z",
+          token: "token"
+        }),
+        login: jest.fn().mockResolvedValue({ id: 1, email: 'user@example.com' }),
+      })
+    }
+    const app: TestingModule = await Test.createTestingModule({
+      controllers: [AuthController],
+      providers: [
+        AuthService,
+        ApiServiceProvider
+      ],
+      imports: [passportModule]
+    }).compile();
 
-//     controller = module.get<AuthController>(AuthController);
-//   });
+    authController = app.get<AuthController>(AuthController);
+    authService = app.get<AuthService>(AuthService);
+  });
 
-//   it('should be defined', () => {
-//     expect(controller).toBeDefined();
-//   });
-// });
+
+  it("calling register method", async () => {
+    const dto = new UserEntity();
+    const result = await authController.register(dto);    
+    const registerData = { 
+      name: "gunel",
+      email: "gunel3@mail.com",
+      password: "$2a$10$E3ziOh//mRzxZXSBbbfWJO9/8my.RgZpen9DcDmDxFHB9JblgJtrK",
+      id: 7,
+      created: "2023-07-14T09:39:15.347Z",
+      updated: "2023-07-14T09:39:15.347Z",
+      token: "token"
+    };
+    expect(result).toMatchObject(registerData); 
+  })
+
+  it("calling login", async () => {
+    const dto = new UserEntity();
+    const result = await authController.login(dto);
+
+    expect(authService.register).toHaveBeenCalled();
+    expect(result).toEqual({ email: 'user@example.com', id: 1 });
+
+  })
+});
+

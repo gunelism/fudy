@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LoginDto, RegisterDto } from 'src/models/user.model';
-import { UserEntity } from 'src/entities/user.entity';
+import { LoginDto, RegisterDto } from '../models/user.model';
+import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 
